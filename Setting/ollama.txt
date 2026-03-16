@@ -1,0 +1,25 @@
+Setting
+
+# Run Ollama
+docker run -d `
+  --gpus all `
+  -v ollama_storage:/root/.ollama `
+  -p 11434:11434 `
+  -e OLLAMA_ORIGINS="*" `
+  --name ollama `
+  ollama/ollama
+
+# Check Ollama run with GPU
+docker exec -it ollama nvidia-smi
+
+# Download Model in Ollama
+docker exec -it ollama ollama pull <Model> (https://ollama.com/search)
+
+# Show Ollama Model
+docker exec -it ollama ollama list
+
+# Delete Ollama Model
+docker exec -it ollama ollama rm <Model>
+
+# Warning
+Model Ai Size > 4b

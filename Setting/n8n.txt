@@ -1,0 +1,7 @@
+Setting
+
+# Run n8n By Tunnel
+docker run -it -p 5678:5678 -v n8n_data:/home/node/.n8n -e WEBHOOK_URL=https://<YOUR_TUNNEL_URL> -e N8N_HOST=<YOUR_TUNNEL_URL> -e N8N_PROTOCOL=https -e N8N_PORT=5678 -e N8N_EDITOR_BASE_URL=https://<YOUR_TUNNEL_URL> n8nio/n8n
+
+# Setting Ollama on n8n
+http://host.docker.internal:11434

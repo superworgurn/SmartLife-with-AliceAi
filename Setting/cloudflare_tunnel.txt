@@ -1,0 +1,13 @@
+Setting
+
+# N8n Tunnel About Don't have personal Domain name
+
+docker run -it --rm --name cloudflare-quick-tunnel `
+  cloudflare/cloudflared `
+  tunnel --url http://host.docker.internal:5678
+
+# Ollama Tunnel About Don't have personal Domain name
+
+docker run -it --rm --name ollama-tunnel `
+  cloudflare/cloudflared `
+  tunnel --url http://host.docker.internal:11434
