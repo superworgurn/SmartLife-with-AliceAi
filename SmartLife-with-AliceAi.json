@@ -10,8 +10,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -432,
-        16
+        -800,
+        -64
       ],
       "id": "76aa8a01-3322-4a88-a6dc-f0430a170d25",
       "name": "Webhook",
@@ -20,28 +20,28 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "==Role: คุณคือ \"Alice\" (อลิซ) เอไอผู้ช่วยส่วนตัวที่มีบุคลิกเรียบร้อย น่ารัก และสุภาพที่สุด หน้าที่ของคุณคือการดูแลและช่วยเหลือคุณ {{ $json.profile.displayName }}\n\nPersonality:\n- แทนตัวเองว่า \"อลิซ\" และลงท้ายประโยคด้วย \"คะ/ค่ะ\" เสมอ\n- เรียกผู้ใช้ว่า \"คุณ {{ $json.profile.displayName }}\" อย่างให้เกียรติ\n- หากถูกขอให้ช่วยเรื่องเขียนโค้ดหรือโปรแกรมมิ่ง ให้ปฏิเสธอย่างสุภาพที่สุดว่า \"อลิซไม่เก่งเรื่องนี้ แต่ยินดีเป็นกำลังใจให้แทนนะคะ\" (ห้ามเขียนโค้ดหรือโครงสร้างโปรแกรมเด็ดขาด)\n\nTime Context:\n- วันและเวลาปัจจุบัน: {{ $now.setZone('Asia/Bangkok').toFormat('cccc ที่ dd MMMM yyyy เวลา HH:mm') }} น.\n\nTool Usage & Strict Rules:\n1. การบันทึกปฏิทิน (Google Calendar):\n   - ห้ามบันทึก หรือใช้เครื่องมือเด็ดขาด หากผู้ใช้ไม่ได้สั่งอย่างชัดเจน (เช่น \"จด\", \"บันทึก\", \"เพิ่มตาราง\", \"ตั้งเตือน\")\n   - การสกัดเวลา (สำคัญมาก): ห้ามนำ \"เวลาปัจจุบัน\" จาก Time Context ไปตั้งเป็นเวลาเริ่มกิจกรรมเด็ดขาด! ให้ยึดเวลาที่ผู้ใช้พิมพ์บอกมาเป็นหลักเสมอ\n   - หากผู้ใช้บอกแค่ \"วันนี้\" แต่ไม่บอกเวลา ให้ถามกลับอย่างสุภาพว่าต้องการให้ตั้งเตือนกี่โมง ห้ามเดาเวลาเอง\n   - เมื่อข้อมูลครบถ้วน ให้สรุปทบทวนให้อยู่ในรูปแบบฟอร์มด้านล่างนี้ และตรวจสอบความถูกต้องก่อนดึงเครื่องมือมาใช้:\n     📌 ชื่อกิจกรรม: ...\n     📅 วันที่: ...\n     ⏰ เวลา: ... ถึง ...\n\n2. การคำนวณ (Calculator):\n   - หากผู้ใช้ให้คำนวณตัวเลข คิดเลข หรือแก้สมการ ให้คุณเรียกใช้เครื่องมือ Calculator Node เสมอ ห้ามคิดคำนวณด้วยตัวเองเด็ดขาด\n\nExamples (ตัวอย่างการคิดวิเคราะห์):\nUser: \"ตั้งเตือนวันนี้ตอน 21:10 หน่อย หัวข้อ Shower วันนี้นะ\"\nAlice's Logic: ผู้ใช้สั่งตั้งเตือน -> เวลาระบุคือ 21:10 (ห้ามใช้เวลาปัจจุบัน) -> สรุปข้อมูลลงฟอร์ม -> เรียกใช้ Google Calendar Tool และตั้งเวลาเป็น 21:10\n\nUser Input:\n{{ $('Webhook').item.json.body.events[0].message.text }}",
+        "text": "==== Role: \nคุณคือ \"Alice\" (อลิซ) เอไอผู้ช่วยส่วนตัวที่มีบุคลิกเรียบร้อย น่ารัก และสุภาพที่สุด หน้าที่ของคุณคือการดูแลและช่วยเหลือคุณ {{ $('Line Messaging1').item.json.profile.displayName }} ในการจัดการชีวิตประจำวัน\n\n== Personality:\n- แทนตัวเองว่า \"อลิซ\" และลงท้ายประโยคด้วย \"คะ/ค่ะ\" เสมอ\n- เรียกผู้ใช้ว่า \"คุณ {{ $('Line Messaging1').item.json.profile.displayName }}\" อย่างให้เกียรติ\n\n== Context from System (JavaScript Hints):\nระบบเบื้องต้นสกัดข้อมูลจากข้อความได้ดังนี้ (หากเป็นค่าว่างแสดงว่าระบบตรวจไม่พบ):\n📌 ชื่อกิจกรรม: {{ $json.extractedData[\"ชื่อกิจกรรม\"] }}\n📅 วันที่: {{ $json.extractedData[\"วันที่\"] }}\n⏰ เวลาเริ่ม: {{ $json.extractedData[\"เวลาเริ่ม\"] }}\n⏰ เวลาสิ้นสุด: {{ $json.extractedData[\"เวลาสิ้นสุด\"] }}\n\n== Tasks:\n1. การตรวจสอบข้อมูล:\n   - ตรวจสอบ \"Context from System\" เทียบกับ \"User Input\"\n   - หากข้อมูลจากระบบสกัดมาได้ครบถ้วนแล้ว ให้อลิซกล่าวสรุปทบทวนรายการที่จะบันทึกให้ผู้ใช้ทราบอย่างสุภาพ และแจ้งว่า \"อลิซกำลังจดลงปฏิทินให้นะคะ\"\n   - หากข้อมูลบางส่วนยังหายไป (เช่น ผู้ใช้พิมพ์ภาษาพูดที่ระบบ JavaScript ตรวจไม่เจอ) ให้อลิซใช้ความฉลาดของคุณสกัดข้อมูลส่วนที่ขาดจาก \"User Input\" ให้สมบูรณ์\n\n2. การตอบกลับ:\n   - หากข้อมูลครบแล้ว: สรุปงานในรูปแบบฟอร์ม 📌📅⏰ และจบการสนทนาอย่างน่ารัก\n   - หากข้อมูลยังไม่ครบจริงๆ: ส่งแบบฟอร์มให้ผู้ใช้กรอกตามระเบียบเดิมค่ะ\n\n== Strict Rules:\n- ห้ามเขียนโค้ดเด็ดขาด\n- ห้ามนำ \"เวลาปัจจุบัน\" มาใช้เป็นเวลาเริ่มกิจกรรม ให้ยึดตามที่ระบบสกัดมาหรือที่ผู้ใช้บอกเท่านั้น\n- หากใน Context มีข้อมูลเวลา (เช่น 15:00) ให้เชื่อถือข้อมูลนั้นเป็นหลัก\n\nUser Input:\n{{ $('Webhook').item.json.body.events[0].message.text }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        272,
-        0
+        0,
+        -64
       ],
       "id": "9468acb2-3ae0-4218-886d-e0943c8d71a3",
       "name": "AI Agent"
     },
     {
       "parameters": {
-        "model": "llama3.1:latest",
+        "model": "qwen2.5:7b",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
       "position": [
-        144,
-        208
+        -112,
+        128
       ],
       "id": "3cbb4d78-e39c-4b7a-ab3c-6e89d24aa0e8",
       "name": "Ollama Chat Model",
@@ -59,7 +59,7 @@
         "messages": {
           "values": [
             {
-              "text": "={{ $json.output }}"
+              "text": "={{ $('AI Agent').item.json.output }}"
             }
           ]
         }
@@ -67,8 +67,8 @@
       "type": "@aotoki/n8n-nodes-line-messaging.lineMessaging",
       "typeVersion": 1,
       "position": [
-        656,
-        0
+        784,
+        -64
       ],
       "id": "1ac32377-536a-467a-bbdf-a9773d14e2ed",
       "name": "Line Messaging",
@@ -87,8 +87,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        304,
-        208
+        48,
+        128
       ],
       "id": "e348671b-86ab-4e7f-a4ef-e8afe2063fd2",
       "name": "Simple Memory"
@@ -101,8 +101,8 @@
       "type": "@aotoki/n8n-nodes-line-messaging.lineMessaging",
       "typeVersion": 1,
       "position": [
-        -208,
-        16
+        -576,
+        -64
       ],
       "id": "0f905ae4-2f0d-4316-801e-37db21b3dca2",
       "name": "Line Messaging1",
@@ -110,38 +110,6 @@
         "lineMessagingApi": {
           "id": "MhyzfOgAkpg2P4dJ",
           "name": "Line Messaging account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "ใช้สำหรับสร้างนัดหมาย ตารางเรียน หรือวันสอบ ลงในปฏิทิน โดยต้องการข้อมูล ชื่อกิจกรรม วันที่ และเวลา",
-        "calendar": {
-          "__rl": true,
-          "value": "worgurn.rue@spumail.net",
-          "mode": "list",
-          "cachedResultName": "worgurn.rue@spumail.net"
-        },
-        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
-        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
-        "additionalFields": {
-          "description": "={{ $('Webhook').item.json.body.events[0].source.userId }}",
-          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
-        }
-      },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
-      "position": [
-        592,
-        192
-      ],
-      "id": "368fda9a-7c04-49c4-8b6a-cfee75bc49d1",
-      "name": "Create an event in Google Calendar",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "iRunCLEgmsM0JZTP",
-          "name": "Google Calendar account"
         }
       }
     },
@@ -182,34 +150,7 @@
     },
     {
       "parameters": {
-        "operation": "send",
-        "to": "=U0f16bfdaff0eed462d0fe0c7e0ae712f",
-        "messages": {
-          "values": [
-            {
-              "text": "={{ $json.output }}"
-            }
-          ]
-        }
-      },
-      "type": "@aotoki/n8n-nodes-line-messaging.lineMessaging",
-      "typeVersion": 1,
-      "position": [
-        528,
-        384
-      ],
-      "id": "55809948-635d-4cf6-a787-45f292ed053a",
-      "name": "Line Messaging2",
-      "credentials": {
-        "lineMessagingApi": {
-          "id": "MhyzfOgAkpg2P4dJ",
-          "name": "Line Messaging account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": "gemma3:4b",
+        "model": "qwen2.5:7b",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
@@ -263,17 +204,6 @@
       }
     },
     {
-      "parameters": {},
-      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
-      "typeVersion": 1,
-      "position": [
-        448,
-        208
-      ],
-      "id": "362d8062-a6e1-496c-af75-213bbef3f5d2",
-      "name": "Calculator"
-    },
-    {
       "parameters": {
         "content": "## Alert",
         "height": 384,
@@ -282,8 +212,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -544,
-        352
+        -896,
+        320
       ],
       "id": "ef6a3520-2496-42dc-9b0f-36cfd284238c",
       "name": "Sticky Note"
@@ -291,51 +221,18 @@
     {
       "parameters": {
         "content": "## Start",
-        "height": 400,
-        "width": 1744,
+        "height": 592,
+        "width": 1940,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -544,
-        -48
+        -896,
+        -288
       ],
       "id": "f2b83818-8408-411e-a40b-24117e3882e2",
       "name": "Sticky Note1"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "531829a3-8122-4a87-a6c2-a58635ef333c",
-              "leftValue": "={{ $('Webhook').item.json.body.events[0].message.type }}",
-              "rightValue": "=text",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        -16,
-        16
-      ],
-      "id": "49c634c7-643f-46ea-a2e5-b30133ed6264",
-      "name": "Filer Text"
     },
     {
       "parameters": {
@@ -370,6 +267,334 @@
       ],
       "id": "91628c20-9286-4528-b01a-4b1cbfbd0f68",
       "name": "Filter Request"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1tphTRbiq4Q0uLdUYP5nEnI1998hSSZjvIQZLZlEJnpg",
+          "mode": "list",
+          "cachedResultName": "Alice_N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tphTRbiq4Q0uLdUYP5nEnI1998hSSZjvIQZLZlEJnpg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tphTRbiq4Q0uLdUYP5nEnI1998hSSZjvIQZLZlEJnpg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "LINE User ID": "={{ $('Webhook').item.json.body.events[0].message.id }}",
+            "End Time": "={{ $('Scan Input').item.json.extractedData[\"เวลาสิ้นสุด\"] }}",
+            "Start Time": "={{ $('Scan Input').item.json.extractedData[\"เวลาเริ่ม\"] }}",
+            "Google Event ID": "={{ $json.id }}",
+            "available": "={{ $json.reminders.useDefault }}",
+            "Timestamp": "={{ $json.updated }}",
+            "Display Name": "={{ $('Line Messaging1').item.json.profile.displayName }}",
+            "Event Summary": "={{ $('Scan Input').item.json.extractedData[\"ชื่อกิจกรรม\"] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "LINE User ID",
+              "displayName": "LINE User ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Display Name",
+              "displayName": "Display Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Event Summary",
+              "displayName": "Event Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Start Time",
+              "displayName": "Start Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "End Time",
+              "displayName": "End Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Google Event ID",
+              "displayName": "Google Event ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "available",
+              "displayName": "available",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "htmlLink",
+              "displayName": "htmlLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "iCalUID",
+              "displayName": "iCalUID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "kind",
+              "displayName": "kind",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "reminders",
+              "displayName": "reminders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "sequence",
+              "displayName": "sequence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        -64
+      ],
+      "id": "d71af447-7a28-44c5-99e7-d6d9fbf21605",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DU0xFnGqgklZK40A",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "worgurn.rue@spumail.net",
+          "mode": "list",
+          "cachedResultName": "worgurn.rue@spumail.net"
+        },
+        "start": "={{ $json.startISO }}",
+        "end": "={{ $json.endISO }}",
+        "additionalFields": {
+          "summary": "={{ $json.summary }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        -64
+      ],
+      "id": "ca706339-c44f-437f-a5ac-1e455adebbb1",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "iRunCLEgmsM0JZTP",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6ba60d9b-39bd-45d4-9f71-9c0c4ceb215a",
+              "leftValue": "={{ $json.isHandled }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -208,
+        -64
+      ],
+      "id": "05423965-d791-4d05-84af-b67106f01660",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. เข้าถึงข้อมูลแบบรวดเร็ว (Caching)\nconst webhookData = $(\"Webhook\").first().json;\nconst profileData = $input.first().json;\nconst displayName = profileData.profile?.displayName || \"คุณ\";\nconst event = webhookData?.body?.events?.[0];\nconst text = event?.message?.text ? event.message.text.trim() : \"\";\n\nlet isHandled = false;\nlet replyMessage = \"\";\nlet extractedData = {\n    \"ชื่อกิจกรรม\": \"\",\n    \"วันที่\": \"\",\n    \"เวลาเริ่ม\": \"\",\n    \"เวลาสิ้นสุด\": \"\"\n};\n\n// 🌟 ฟังก์ชันพิเศษ: แปลงภาษาพูดไทย เป็นเวลา 24 ชั่วโมง (เช่น บ่ายสองครึ่ง -> 14:30)\nfunction parseTime(s) {\n    if (!s) return \"\";\n    s = s.trim();\n    \n    // ตรวจสอบกรณีพิมพ์ตัวเลขมาตรงๆ เช่น 14:30 หรือ 14.30\n    let standardMatch = s.match(/([0-9]{1,2})[:.]([0-9]{2})/);\n    if (standardMatch) return `${standardMatch[1].padStart(2, '0')}:${standardMatch[2]}`;\n\n    let hour = 0;\n    let minute = s.includes(\"ครึ่ง\") ? 30 : 0;\n    \n    let numMatch = s.match(/[0-9]+/);\n    let num = numMatch ? parseInt(numMatch[0]) : 0;\n\n    // แปลงคำอ่านภาษาไทยเป็นตัวเลข (รวมตัวเลขไทย)\n    const thaiNums = {\n        \"หนึ่ง\":1, \"เอ็ด\":1, \"สอง\":2, \"สาม\":3, \"สี่\":4, \"ห้า\":5, \n        \"หก\":6, \"เจ็ด\":7, \"แปด\":8, \"เก้า\":9, \"สิบ\":10,\n        \"๑\":1, \"๒\":2, \"๓\":3, \"๔\":4, \"๕\":5, \"๖\":6, \"๗\":7, \"๘\":8, \"๙\":9, \"๑๐\":10\n    };\n    for (let key in thaiNums) {\n        if (s.includes(key)) num = thaiNums[key];\n    }\n\n    // คำนวณชั่วโมงตามช่วงเวลา\n    if (s.includes(\"เที่ยงคืน\")) { hour = 0; }\n    else if (s.includes(\"เที่ยง\")) { hour = 12; }\n    else if (s.includes(\"ตี\")) { hour = num || 1; }\n    else if (s.includes(\"ทุ่ม\")) { hour = (num || 1) + 18; }\n    else if (s.includes(\"บ่าย\")) { hour = (num || 1) + 12; }\n    else if (s.includes(\"เย็น\")) { hour = num <= 6 ? num + 12 : num; }\n    else if (s.includes(\"เช้า\")) { hour = num <= 6 ? num + 6 : num; }\n    else if (s.includes(\"โมง\")) {\n        if (num === 0) hour = 13; // บ่ายโมง\n        else if (num === 6) hour = 18; // หกโมงเย็น\n        else if (num >= 1 && num <= 5) hour = num + 12; // บ่าย 2-5 โมง\n        else if (num >= 7 && num <= 11) hour = num; // 7-11 โมงเช้า\n        else if (num === 12) hour = 12;\n    } else {\n        hour = num;\n    }\n\n    if (hour < 0 || hour > 23) return s;\n    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;\n}\n\n// 2. เริ่มต้นการตรวจสอบข้อมูล\nif (event?.message?.type !== \"text\") {\n    replyMessage = `อลิซยังอ่านรูปภาพหรือสติ๊กเกอร์ไม่ได้นะคะ รบกวนคุณ ${displayName} พิมพ์เป็นข้อความมาน้า 🌸`;\n    isHandled = true;\n} else if (text.length > 0) {\n    \n    // 3. ตรวจสอบการคิดเลข\n    if (/^[0-9+\\-*/().\\s]+$/.test(text) && /[+\\-*/]/.test(text)) {\n        try {\n            const result = new Function(`return ${text}`)();\n            replyMessage = `คุณ ${displayName} คะ ผลลัพธ์คือ ${result} ค่ะ 🌸`;\n            isHandled = true;\n        } catch (e) { isHandled = false; }\n    }\n\n    // 4. สกัดข้อมูล (Data Extraction) แบบฉลาดที่สุด\n    if (!isHandled) {\n        // แกะชื่อกิจกรรม (ตัดคำบอกเวลาด้านหลังทิ้ง เพื่อไม่ให้ชื่อรก)\n        const subjectMatch = text.match(/(?:หัวข้อ|เรื่อง|ชื่อกิจกรรม|ชื่อ)\\s*[:：]?\\s*([^\\n]+)/i);\n        if (subjectMatch) {\n            let subject = subjectMatch[1].trim();\n            // ลบคำบอกเวลาที่อาจต่อท้ายชื่อกิจกรรม (เช่น \"ออกกำลังกาย บ่ายสาม ถึง หกโมง\" -> \"ออกกำลังกาย\")\n            subject = subject.replace(/(วันนี้|พรุ่งนี้|มะรืน|บ่าย|เช้า|เย็น|เที่ยง|ตี|ทุ่ม|โมง)\\s*[\\u0E00-\\u0E7F0-9]+.*$/g, '').trim();\n            extractedData[\"ชื่อกิจกรรม\"] = subject;\n        }\n\n        // แกะวันที่\n        const dateMatch = text.match(/(วันนี้|พรุ่งนี้|มะรืน|[0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})/i);\n        if (dateMatch) extractedData[\"วันที่\"] = dateMatch[0].trim();\n\n        // 🌟 แกะเวลา (รองรับรูปแบบ \"บ่ายสาม ถึง หกโมง\" โดยใช้ฟังก์ชันแปลงตัวเลข)\n        // ปรับปรุง timeExpr ให้ครอบคลุมคำบอกเวลาภาษาไทยทั้งหมด รวมถึงตัวเลขไทย\n        const timeExpr = \"(?:เที่ยงคืน|เที่ยง|(?:บ่าย|เช้า|เย็น|ตี)\\\\s*[\\\\u0E00-\\\\u0E7F0-9]+|(?:[\\\\u0E00-\\\\u0E7F0-9]+)\\\\s*(?:ทุ่ม|โมง(?:เช้า|เย็น)?))(?:\\\\s*ครึ่ง)?|[0-9]{1,2}[:.][0-9]{1,2}\";\n        const timeRangeRegex = new RegExp(`(${timeExpr})\\\\s*(?:ถึง|-|จนถึง)\\\\s*(${timeExpr})`, \"i\");\n        const singleTimeRegex = new RegExp(`(?:เวลา|ตอน|เริ่ม)\\\\s*[:：]?\\\\s*(${timeExpr})`, \"i\");\n        const fallbackTimeRegex = new RegExp(`(${timeExpr})`, \"i\");\n\n        const rangeMatch = text.match(timeRangeRegex);\n        if (rangeMatch) {\n            extractedData[\"เวลาเริ่ม\"] = parseTime(rangeMatch[1]);\n            extractedData[\"เวลาสิ้นสุด\"] = parseTime(rangeMatch[2]);\n        } else {\n            const singleMatch = text.match(singleTimeRegex);\n            if (singleMatch) {\n                extractedData[\"เวลาเริ่ม\"] = parseTime(singleMatch[1]);\n            } else {\n                // ถ้าไม่มีคำว่า \"ตอน\" หรือ \"เริ่ม\" นำหน้า ก็จะหยิบคำบอกเวลาที่เจอมาใส่เลย\n                const fallbackMatch = text.match(fallbackTimeRegex);\n                if (fallbackMatch) extractedData[\"เวลาเริ่ม\"] = parseTime(fallbackMatch[1]);\n            }\n        }\n\n        // 💡 ตรวจสอบความครบถ้วน\n        if (extractedData[\"ชื่อกิจกรรม\"] && extractedData[\"วันที่\"] && extractedData[\"เวลาเริ่ม\"]) {\n            isHandled = false; // ส่งข้อมูลให้ AI หรือโหนดถัดไปบันทึก\n        } else if (text.includes(\"ชื่อกิจกรรม\") || text.includes(\"หัวข้อ\")) {\n            replyMessage = `คุณ ${displayName} คะ ข้อมูลยังขาดบางส่วน (ขาด: ${!extractedData[\"ชื่อกิจกรรม\"] ? 'ชื่อ, ' : ''}${!extractedData[\"วันที่\"] ? 'วันที่, ' : ''}${!extractedData[\"เวลาเริ่ม\"] ? 'เวลา' : ''}) รบกวนตรวจสอบอีกครั้งนะคะ 🌸`;\n            isHandled = true;\n        }\n    }\n}\n\nreturn {\n    isHandled,\n    replyMessage,\n    extractedData,\n    debugText: text\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -384,
+        -64
+      ],
+      "id": "c4d82968-a042-41b4-95d5-e6a5c64aa955",
+      "name": "Scan Input"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. ดึงข้อมูลจากทั้ง 2 แหล่ง (Scan Input และ AI Agent)\nconst jsData = $(\"Scan Input\").first().json.extractedData;\nconst aiOutput = $(\"AI Agent\").first().json.output || \"\";\n\n// ฟังก์ชันช่วยสกัดข้อมูลจากข้อความที่ AI ตอบกลับ (ในกรณีที่ AI ช่วยเติมข้อมูลให้)\nfunction extractFromAI(text) {\n    const summaryMatch = text.match(/📌 ชื่อกิจกรรม:\\s*([^\\n]+)/);\n    const dateMatch = text.match(/📅 วันที่:\\s*([^\\n]+)/);\n    const startMatch = text.match(/⏰ เวลาเริ่ม:\\s*([^\\n]+)/);\n    const endMatch = text.match(/⏰ เวลาสิ้นสุด:\\s*([^\\n]+)/);\n    \n    return {\n        \"ชื่อกิจกรรม\": summaryMatch ? summaryMatch[1].trim() : \"\",\n        \"วันที่\": dateMatch ? dateMatch[1].trim() : \"\",\n        \"เวลาเริ่ม\": startMatch ? startMatch[1].trim() : \"\",\n        \"เวลาสิ้นสุด\": endMatch ? endMatch[1].trim() : \"\"\n    };\n}\n\nconst aiData = extractFromAI(aiOutput);\n\n// เลือกใช้ข้อมูล: ถ้า AI มีข้อมูลให้ใช้ AI ถ้าไม่มีให้ใช้จากโหนด Scan Input\nconst extracted = {\n    \"ชื่อกิจกรรม\": aiData[\"ชื่อกิจกรรม\"] || jsData[\"ชื่อกิจกรรม\"] || \"ไม่มีชื่อกิจกรรม\",\n    \"วันที่\": aiData[\"วันที่\"] || jsData[\"วันที่\"] || \"วันนี้\",\n    \"เวลาเริ่ม\": aiData[\"เวลาเริ่ม\"] || jsData[\"เวลาเริ่ม\"] || \"00:00\",\n    \"เวลาสิ้นสุด\": aiData[\"เวลาสิ้นสุด\"] || jsData[\"เวลาสิ้นสุด\"] || \"\"\n};\n\n// 2. ฟังก์ชันแปลงวันที่ภาษาไทย (วันนี้, พรุ่งนี้, มะรืน หรือ วว/ดด/ปป)\nfunction convertThaiDate(dateStr) {\n    const now = new Date();\n    let targetDate = new Date(now);\n\n    if (dateStr.includes('พรุ่งนี้')) {\n        targetDate.setDate(now.getDate() + 1);\n    } else if (dateStr.includes('มะรืน')) {\n        targetDate.setDate(now.getDate() + 2);\n    } else if (!dateStr || dateStr.includes('วันนี้')) {\n        // วันนี้ (ไม่ต้องเปลี่ยน)\n    } else {\n        const parts = dateStr.match(/(\\d+)[/\\\\-](\\d+)[/\\\\-](\\d+)/);\n        if (parts) {\n            const day = parseInt(parts[1]);\n            const month = parseInt(parts[2]) - 1;\n            let year = parseInt(parts[3]);\n            if (year > 2500) year -= 543; // แปลง พ.ศ. เป็น ค.ศ.\n            targetDate = new Date(year, month, day);\n        }\n    }\n    return targetDate;\n}\n\n// 3. ฟังก์ชันรวมวันที่กับเวลา (HH:mm)\nfunction combineDateTime(dateObj, timeStr) {\n    const [hour, minute] = timeStr.split(':').map(Number);\n    const dt = new Date(dateObj);\n    dt.setHours(hour || 0, minute || 0, 0, 0);\n    return dt;\n}\n\n// 🌟 4. ฟังก์ชันสำคัญ: แปลงเวลาเป็น ISO แบบ Local (แก้ปัญหาเวลาเลื่อน +7 ชม.)\nfunction toLocalISOString(date) {\n    const pad = (num) => (num < 10 ? '0' : '') + num;\n    return date.getFullYear() +\n        '-' + pad(date.getMonth() + 1) +\n        '-' + pad(date.getDate()) +\n        'T' + pad(date.getHours()) +\n        ':' + pad(date.getMinutes()) +\n        ':' + pad(date.getSeconds());\n}\n\n// --- เริ่มประมวลผล ---\nconst eventDate = convertThaiDate(extracted[\"วันที่\"]);\nconst startDateTime = combineDateTime(eventDate, extracted[\"เวลาเริ่ม\"]);\n\nlet endDateTime;\nif (extracted[\"เวลาสิ้นสุด\"] && extracted[\"เวลาสิ้นสุด\"] !== \"\") {\n    endDateTime = combineDateTime(eventDate, extracted[\"เวลาสิ้นสุด\"]);\n} else {\n    // ถ้าไม่มีเวลาสิ้นสุด ให้ตั้งเป็น 1 ชั่วโมงหลังจากเวลาเริ่ม\n    endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);\n}\n\n// ป้องกันกรณีเวลาจบ น้อยกว่าเวลาเริ่ม\nif (endDateTime <= startDateTime) {\n    endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);\n}\n\nreturn {\n    summary: extracted[\"ชื่อกิจกรรม\"],\n    startISO: toLocalISOString(startDateTime),\n    endISO: toLocalISOString(endDateTime)\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        -64
+      ],
+      "id": "0facc238-7a16-4449-b768-5c7cfe93e654",
+      "name": "Convert Time"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "to": "={{ $('Line Messaging1').item.json.profile.userId }}",
+        "messages": {
+          "values": [
+            {
+              "text": "={{ $('Scan Input').item.json.replyMessage }}"
+            }
+          ]
+        }
+      },
+      "type": "@aotoki/n8n-nodes-line-messaging.lineMessaging",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -224
+      ],
+      "id": "747d425c-ea0c-40c7-bf11-240323b701b3",
+      "name": "Normal Chat",
+      "credentials": {
+        "lineMessagingApi": {
+          "id": "MhyzfOgAkpg2P4dJ",
+          "name": "Line Messaging account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "to": "=U0f16bfdaff0eed462d0fe0c7e0ae712f",
+        "messages": {
+          "values": [
+            {
+              "text": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "@aotoki/n8n-nodes-line-messaging.lineMessaging",
+      "typeVersion": 1,
+      "position": [
+        528,
+        384
+      ],
+      "id": "55809948-635d-4cf6-a787-45f292ed053a",
+      "name": "Messenger",
+      "credentials": {
+        "lineMessagingApi": {
+          "id": "MhyzfOgAkpg2P4dJ",
+          "name": "Line Messaging account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -400,7 +625,7 @@
       "main": [
         [
           {
-            "node": "Line Messaging",
+            "node": "Convert Time",
             "type": "main",
             "index": 0
           }
@@ -422,19 +647,8 @@
       "main": [
         [
           {
-            "node": "Filer Text",
+            "node": "Scan Input",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create an event in Google Calendar": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -455,7 +669,7 @@
       "main": [
         [
           {
-            "node": "Line Messaging2",
+            "node": "Messenger",
             "type": "main",
             "index": 0
           }
@@ -484,19 +698,48 @@
         ]
       ]
     },
-    "Calculator": {
-      "ai_tool": [
+    "Filter Request": {
+      "main": [
         [
           {
-            "node": "AI Agent",
-            "type": "ai_tool",
+            "node": "AI Agent1",
+            "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Filer Text": {
+    "Append row in sheet": {
       "main": [
+        [
+          {
+            "node": "Line Messaging",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Normal Chat",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "AI Agent",
@@ -506,11 +749,22 @@
         ]
       ]
     },
-    "Filter Request": {
+    "Scan Input": {
       "main": [
         [
           {
-            "node": "AI Agent1",
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert Time": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
             "type": "main",
             "index": 0
           }
@@ -527,8 +781,9 @@
     "executionOrder": "v0",
     "binaryMode": "separate"
   },
-  "versionId": "b39fbbaf-1bce-43ea-87c0-8d47435819a1",
+  "versionId": "18aa5a9c-77b4-4083-ba4f-60b34687e688",
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "016e01b478aa3bfc84e6d9bbb99a07268a3eb32882f70a43d13cc1fc95af3e60"
   },
   "id": "BEBRFPBxxHSC3ozH",
