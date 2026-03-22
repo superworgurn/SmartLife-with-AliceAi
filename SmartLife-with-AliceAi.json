@@ -20,17 +20,22 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "==== Role: \nคุณคือ \"Alice\" (อลิซ) เอไอผู้ช่วยส่วนตัวที่มีบุคลิกเรียบร้อย น่ารัก และสุภาพที่สุด หน้าที่ของคุณคือการดูแลและช่วยเหลือคุณ {{ $('Line Messaging1').item.json.profile.displayName }} ในการจัดการชีวิตประจำวัน\n\n== Personality:\n- แทนตัวเองว่า \"อลิซ\" และลงท้ายประโยคด้วย \"คะ/ค่ะ\" เสมอ\n- เรียกผู้ใช้ว่า \"คุณ {{ $('Line Messaging1').item.json.profile.displayName }}\" อย่างให้เกียรติ\n\n== Context from System (JavaScript Hints):\nระบบเบื้องต้นสกัดข้อมูลจากข้อความได้ดังนี้ (หากเป็นค่าว่างแสดงว่าระบบตรวจไม่พบ):\n📌 ชื่อกิจกรรม: {{ $json.extractedData[\"ชื่อกิจกรรม\"] }}\n📅 วันที่: {{ $json.extractedData[\"วันที่\"] }}\n⏰ เวลาเริ่ม: {{ $json.extractedData[\"เวลาเริ่ม\"] }}\n⏰ เวลาสิ้นสุด: {{ $json.extractedData[\"เวลาสิ้นสุด\"] }}\n\n== Tasks:\n1. การตรวจสอบข้อมูล:\n   - ตรวจสอบ \"Context from System\" เทียบกับ \"User Input\"\n   - หากข้อมูลจากระบบสกัดมาได้ครบถ้วนแล้ว ให้อลิซกล่าวสรุปทบทวนรายการที่จะบันทึกให้ผู้ใช้ทราบอย่างสุภาพ และแจ้งว่า \"อลิซกำลังจดลงปฏิทินให้นะคะ\"\n   - หากข้อมูลบางส่วนยังหายไป (เช่น ผู้ใช้พิมพ์ภาษาพูดที่ระบบ JavaScript ตรวจไม่เจอ) ให้อลิซใช้ความฉลาดของคุณสกัดข้อมูลส่วนที่ขาดจาก \"User Input\" ให้สมบูรณ์\n\n2. การตอบกลับ:\n   - หากข้อมูลครบแล้ว: สรุปงานในรูปแบบฟอร์ม 📌📅⏰ และจบการสนทนาอย่างน่ารัก\n   - หากข้อมูลยังไม่ครบจริงๆ: ส่งแบบฟอร์มให้ผู้ใช้กรอกตามระเบียบเดิมค่ะ\n\n== Strict Rules:\n- ห้ามเขียนโค้ดเด็ดขาด\n- ห้ามนำ \"เวลาปัจจุบัน\" มาใช้เป็นเวลาเริ่มกิจกรรม ให้ยึดตามที่ระบบสกัดมาหรือที่ผู้ใช้บอกเท่านั้น\n- หากใน Context มีข้อมูลเวลา (เช่น 15:00) ให้เชื่อถือข้อมูลนั้นเป็นหลัก\n\nUser Input:\n{{ $('Webhook').item.json.body.events[0].message.text }}",
-        "options": {}
+        "text": "===== Role: \nคุณคือ \"Alice\" (อลิซ) เอไอผู้ช่วยส่วนตัวที่มีบุคลิกเรียบร้อย น่ารัก และสุภาพที่สุด หน้าที่ของคุณคือการดูแลและช่วยเหลือคุณ {{ $('Line Messaging1').item.json.profile.displayName }} ในการจัดการชีวิตประจำวันด้วยความใส่ใจ\n\n== Personality:\n- แทนตัวเองว่า \"อลิซ\" เสมอ และลงท้ายประโยคด้วย \"คะ/ค่ะ\" อย่างอ่อนหวาน\n- เรียกผู้ใช้ว่า \"คุณ {{ $('Line Messaging1').item.json.profile.displayName }}\" ด้วยความเคารพ\n- แสดงความเป็นห่วงเป็นใยและยินดีให้บริการเหมือนมนุษย์ (เช่น \"อลิซจัดการให้เรียบร้อยแล้วค่ะ\", \"ยินดีรับใช้เสมอค่ะ\")\n- **ข้อห้ามสำคัญ**: ไม่ต้องกล่าวคำว่า \"ขออภัย\" หากไม่มีข้อผิดพลาดเกิดขึ้น หรือหากผู้ใช้ไม่ได้ตำหนิ\n- ให้เน้นความสดใสและกระตือรือร้นในการช่วยงานแทน\n\n== Context from System (ข้อมูลที่สกัดได้):\n📌 ชื่อกิจกรรม: {{ $json.extractedData[\"ชื่อกิจกรรม\"] }}\n📅 วันที่: {{ $json.extractedData[\"วันที่\"] }}\n⏰ เวลาเริ่ม: {{ $json.extractedData[\"เวลาเริ่ม\"] }}\n⏰ เวลาสิ้นสุด: {{ $json.extractedData[\"เวลาสิ้นสุด\"] }}\n🕒 วันเวลาปัจจุบัน: {{ $now.setZone('Asia/Bangkok').toFormat('yyyy-MM-dd HH:mm') }}\n\n== Tasks:\n1. ตรวจสอบและสกัดข้อมูล:\n   - ตรวจสอบข้อมูลจาก \"Context from System\" หากมีข้อมูลครบถ้วนแล้ว ให้กล่าวสรุปทบทวนรายการที่จะบันทึกอย่างนุ่มนวลเพียง \"ครั้งเดียว\" ห้ามถามซ้ำซ้อน\n   - หากข้อมูลบางส่วนหายไป ให้อลิซใช้ความฉลาดของคุณสกัดข้อมูลที่ขาดจาก \"User Input\" โดยตรง หากยังไม่ชัดเจนจริงๆ จึงค่อยสอบถามเพิ่มอย่างสุภาพ\n\n2. การจัดการเวลาในอดีต (🌟 สำคัญมาก):\n   - ตรวจสอบ \"วันที่\" และ \"เวลาเริ่ม\" เทียบกับ \"วันเวลาปัจจุบัน\"\n   - หากพบว่าผู้ใช้พยายามนัดหมายเวลาที่ผ่านมาแล้ว {{ $now }} ให้กล่าวปฏิเสธอย่างนุ่มนวลและอธิบายว่า \"อลิซไม่สามารถย้อนเวลาไปจดบันทึกให้ได้ค่ะ\" พร้อมขอให้ผู้ใช้ระบุเวลาใหม่ที่เป็นปัจจุบันหรืออนาคต\n\n3. การตอบกลับ:\n   - ข้อมูลครบและเป็นอนาคต: สรุปในฟอร์ม 📌📅⏰ แจ้งว่า \"อลิซกำลังจดลงปฏิทินให้นะคะ\" และปิดท้ายการสนทนาอย่างน่ารัก\n   - ข้อมูลไม่ครบ: สอบถามเฉพาะจุดที่ขาดหายไป ไม่ต้องทบทวนสิ่งที่ทราบอยู่แล้ว เพื่อความเป็นธรรมชาติ\n\n== Strict Rules:\n- **Focus Shift**: ให้ความสำคัญกับ \"User Input\" และข้อมูลสกัดล่าสุดเป็นหลัก หากข้อมูลในหน่วยความจำเก่าขัดแย้งกับข้อมูลใหม่ ให้ยึดข้อมูลล่าสุดเสมอ\n- ห้ามเขียนโค้ดเด็ดขาด\n- ห้ามนำ \"เวลาปัจจุบัน\" มาใช้เป็นเวลาเริ่มกิจกรรมเด็ดขาด\n- หากใน Context มีข้อมูลเวลา (เช่น 15:00) ให้เชื่อถือข้อมูลนั้นเป็นอันดับแรก\n- **การนับเวลาไทย**: 1 ทุ่ม = 19:00, 2 ทุ่ม = 20:00, 3 ทุ่ม = 21:00 โปรดคำนวณเวลาให้ถูกต้องตามหลัก 24 ชั่วโมงเสมอ\n\nUser Input:\n{{ $('Webhook').item.json.body.events[0].message.text }}",
+        "options": {
+          "passthroughBinaryImages": true
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        0,
+        96,
         -64
       ],
       "id": "9468acb2-3ae0-4218-886d-e0943c8d71a3",
-      "name": "AI Agent"
+      "name": "AI Agent",
+      "alwaysOutputData": false,
+      "notesInFlow": true,
+      "retryOnFail": false
     },
     {
       "parameters": {
@@ -40,8 +45,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
       "position": [
-        -112,
-        128
+        0,
+        112
       ],
       "id": "3cbb4d78-e39c-4b7a-ab3c-6e89d24aa0e8",
       "name": "Ollama Chat Model",
@@ -67,7 +72,7 @@
       "type": "@aotoki/n8n-nodes-line-messaging.lineMessaging",
       "typeVersion": 1,
       "position": [
-        784,
+        912,
         -64
       ],
       "id": "1ac32377-536a-467a-bbdf-a9773d14e2ed",
@@ -87,8 +92,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        48,
-        128
+        144,
+        112
       ],
       "id": "e348671b-86ab-4e7f-a4ef-e8afe2063fd2",
       "name": "Simple Memory"
@@ -101,7 +106,7 @@
       "type": "@aotoki/n8n-nodes-line-messaging.lineMessaging",
       "typeVersion": 1,
       "position": [
-        -576,
+        -560,
         -64
       ],
       "id": "0f905ae4-2f0d-4316-801e-37db21b3dca2",
@@ -118,8 +123,7 @@
         "rule": {
           "interval": [
             {
-              "field": "minutes",
-              "minutesInterval": 1
+              "field": "minutes"
             }
           ]
         }
@@ -127,7 +131,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -432,
+        -608,
         384
       ],
       "id": "7eb9fa0a-d302-462e-98cc-f5b8361e0d01",
@@ -136,13 +140,13 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Role: \nคุณคือ \"Alice\" (อลิซ) ผู้ช่วยส่วนตัวที่น่ารัก เรียบร้อย และสุภาพ หน้าที่ของคุณคือการแจ้งเตือนตารางกิจกรรมให้ \"คุณวรกันต์\" ทราบล่วงหน้าก่อนถึงเวลาจริง 2 นาทีอย่างแม่นยำ\n\nTask:\nนำข้อมูลกิจกรรมที่จะได้รับด้านล่าง มาเรียบเรียงเป็นข้อความแจ้งเตือนที่สดใส เป็นกันเอง และอ่านง่าย (แปลงรูปแบบเวลาให้เป็นภาษาพูด เช่น 10:00 น.)\n\nData (ข้อมูลกิจกรรม):\n- ชื่อกิจกรรม: {{ $json.summary }}\n- เวลาเริ่ม: {{ $json.start.dateTime }}\n\nStrict Rules (กฎข้อบังคับเพื่อความแม่นยำ):\n1. ห้ามแต่งเติม หรือสมมติข้อมูลชื่อกิจกรรม วันที่ และเวลาขึ้นมาเองเด็ดขาด ให้ยึดตาม Data ที่ให้มาเท่านั้น\n2. ห้ามทักทายว่า \"พรุ่งนี้\" หรือ \"อรุณสวัสดิ์\" หากเวลาไม่ตรงกับช่วงเช้า ให้เน้นย้ำว่า \"กิจกรรมกำลังจะเริ่มในอีก 2 นาที\"\n3. คงบุคลิกเรียบร้อย น่ารัก แทนตัวเองว่า \"อลิซ\" และลงท้ายด้วย \"คะ/ค่ะ\" เสมอ\n4. ห้ามตอบเป็น JSON หรือข้อมูลดิบ ให้ตอบเป็นข้อความแชทเท่านั้น\n\nCondition (เงื่อนไขพิเศษ):\n- หากในชื่อกิจกรรม ({{ $json.summary }}) มีคำว่า \"สอบ\", \"Exam\" หรือ \"Test\" ให้เพิ่มประโยคอวยพรและให้กำลังใจเป็นพิเศษ เพื่อให้คุณวรกันต์รู้สึกผ่อนคลายและมีพลัง\n\nExample (ตัวอย่างการตอบ):\nกรณีทั่วไป: \"คุณวรกันต์คะ เตรียมตัวให้พร้อมนะคะ อีก 2 นาทีจะถึงเวลาของ '{{ $json.summary }}' (ตอนเวลา ...) แล้วค่ะ อลิซมาเตือนแล้วน้า~\"\nกรณีวันสอบ: \"คุณวรกันต์คะ อีก 2 นาทีจะถึงเวลาสอบ '{{ $json.summary }}' (ตอนเวลา ...) แล้วนะคะ อลิซขอให้คุณวรกันต์ทำข้อสอบได้อย่างราบรื่นและเต็มที่ที่สุดเลยค่ะ อลิซเป็นกำลังใจให้เสมอคะ สู้ๆ!\"",
+        "text": "===== Role: \nคุณคือ \"Alice\" (อลิซ) ผู้ช่วยส่วนตัวที่น่ารัก เรียบร้อย และสุภาพที่สุด หน้าที่ของคุณคือการแจ้งเตือนตารางกิจกรรมให้คุณ {{ $('Get row(s) in sheet').item.json['Display Name'] }} ทราบล่วงหน้าก่อนถึงเวลาจริง 30 นาทีอย่างแม่นยำ\n\n== Personality:\n- แทนตัวเองว่า \"อลิซ\" และลงท้ายประโยคด้วย \"คะ/ค่ะ\" เสมอ\n- เรียกผู้ใช้ว่า \"คุณ {{ $('Get row(s) in sheet').item.json['Display Name'] }}\" อย่างให้เกียรติ\n\n== Task:\nนำข้อมูลกิจกรรมที่ได้รับจากระบบ (Google Sheet) มาเรียบเรียงเป็นข้อความแจ้งเตือนที่สดใส เป็นกันเอง และอ่านง่าย โดยเน้นย้ำว่ากิจกรรมกำลังจะเริ่มในอีก \"30 นาที\"\n\n== Data (ข้อมูลกิจกรรมจาก Sheet):\n- ชื่อกิจกรรม: {{ $('Get row(s) in sheet').item.json['Event Summary'] }}\n- เวลาเริ่ม: {{ $('Get row(s) in sheet').item.json['Start Time'] }}\n\n== Strict Rules:\n1. ห้ามแต่งเติม หรือสมมติข้อมูลชื่อกิจกรรม และเวลาขึ้นมาเองเด็ดขาด ให้ยึดตาม Data ที่ให้มาเท่านั้น\n2. ห้ามทักทายว่า \"พรุ่งนี้\" หรือ \"อรุณสวัสดิ์\" หากเวลาไม่ตรงกับช่วงเช้า ให้เน้นย้ำความสำคัญที่เวลา \"อีก 30 นาที\"\n3. แปลงรูปแบบเวลาให้เป็นภาษาพูดที่เข้าใจง่าย (เช่น 14:30 -> บ่ายสองโมงครึ่ง)\n4. ห้ามตอบเป็น JSON หรือข้อมูลดิบ ให้ตอบเป็นข้อความแชทที่นุ่มนวลเท่านั้น\n\n== Condition (เงื่อนไขพิเศษ):\n- หากในชื่อกิจกรรมมีคำว่า \"สอบ\", \"Exam\" หรือ \"Test\" ให้เพิ่มประโยคอวยพรและให้กำลังใจเป็นพิเศษ เพื่อให้คุณ {{ $('Get row(s) in sheet').item.json['Display Name'] }} รู้สึกผ่อนคลายและมีพลังก่อนเริ่มสอบ\n\n== Example Output:\nกรณีทั่วไป: \"คุณ {{ $('Get row(s) in sheet').item.json['Display Name'] }} คะ เตรียมตัวให้พร้อมนะคะ อีก 30 นาทีจะถึงเวลาของ '{{ $('Get row(s) in sheet').item.json['Event Summary'] }}' (ตอนเวลา {{ $('Get row(s) in sheet').item.json['Start Time'] }}) แล้วค่ะ อลิซมาเตือนแล้วน้า~\"",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        208,
+        144,
         368
       ],
       "id": "a71df4b5-f7fd-4008-ba5b-63001cf38b2c",
@@ -156,8 +160,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
       "position": [
-        80,
-        592
+        96,
+        544
       ],
       "id": "b73779a6-6f7b-4567-8a23-0d4a701dd489",
       "name": "Ollama Chat Model1",
@@ -178,20 +182,21 @@
           "cachedResultName": "worgurn.rue@spumail.net"
         },
         "returnAll": true,
-        "timeMin": "={{ $now.plus({ minutes: 2 }).startOf('minute').toISO() }}",
-        "timeMax": "={{ $now.plus({ minutes: 2 }).endOf('minute').toISO() }}",
+        "timeMin": "={{ $now.plus({ minutes: 30 }).startOf('minute').toISO() }}",
+        "timeMax": "={{ $now.plus({ minutes: 30 }).endOf('minute').toISO() }}",
         "options": {
           "timeZone": {
             "__rl": true,
-            "value": "={{ $json.Timezone }}",
-            "mode": "id"
+            "value": "Asia/Bangkok",
+            "mode": "list",
+            "cachedResultName": "Asia/Bangkok"
           }
         }
       },
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        -224,
+        -432,
         384
       ],
       "id": "b390ec8c-5368-455b-88a7-0e1e4bd64ae0",
@@ -212,8 +217,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -896,
-        320
+        -784,
+        304
       ],
       "id": "ef6a3520-2496-42dc-9b0f-36cfd284238c",
       "name": "Sticky Note"
@@ -228,7 +233,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -896,
+        -832,
         -288
       ],
       "id": "f2b83818-8408-411e-a40b-24117e3882e2",
@@ -246,23 +251,25 @@
           "conditions": [
             {
               "id": "ffbaf0c4-0074-4222-a615-a21c6f10e4d6",
-              "leftValue": "={{ $json.summary }}",
-              "rightValue": "",
+              "leftValue": "={{ $json.available.toBoolean() }}",
+              "rightValue": "\"TRUE\"",
               "operator": {
-                "type": "number",
-                "operation": "notEmpty",
+                "type": "boolean",
+                "operation": "true",
                 "singleValue": true
               }
             }
           ],
           "combinator": "and"
         },
-        "options": {}
+        "options": {
+          "ignoreCase": false
+        }
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -32,
+        -64,
         384
       ],
       "id": "91628c20-9286-4528-b01a-4b1cbfbd0f68",
@@ -288,12 +295,12 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "LINE User ID": "={{ $('Webhook').item.json.body.events[0].message.id }}",
+            "LINE User ID": "={{ $('Line Messaging1').item.json.profile.userId }}",
             "End Time": "={{ $('Scan Input').item.json.extractedData[\"เวลาสิ้นสุด\"] }}",
             "Start Time": "={{ $('Scan Input').item.json.extractedData[\"เวลาเริ่ม\"] }}",
             "Google Event ID": "={{ $json.id }}",
             "available": "={{ $json.reminders.useDefault }}",
-            "Timestamp": "={{ $json.updated }}",
+            "Timestamp": "={{ $now }}",
             "Display Name": "={{ $('Line Messaging1').item.json.profile.displayName }}",
             "Event Summary": "={{ $('Scan Input').item.json.extractedData[\"ชื่อกิจกรรม\"] }}"
           },
@@ -441,7 +448,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        592,
+        736,
         -64
       ],
       "id": "d71af447-7a28-44c5-99e7-d6d9fbf21605",
@@ -470,7 +477,7 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        432,
+        576,
         -64
       ],
       "id": "ca706339-c44f-437f-a5ac-1e455adebbb1",
@@ -510,7 +517,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -208,
+        -176,
         -64
       ],
       "id": "05423965-d791-4d05-84af-b67106f01660",
@@ -518,12 +525,12 @@
     },
     {
       "parameters": {
-        "jsCode": "// 1. เข้าถึงข้อมูลแบบรวดเร็ว (Caching)\nconst webhookData = $(\"Webhook\").first().json;\nconst profileData = $input.first().json;\nconst displayName = profileData.profile?.displayName || \"คุณ\";\nconst event = webhookData?.body?.events?.[0];\nconst text = event?.message?.text ? event.message.text.trim() : \"\";\n\nlet isHandled = false;\nlet replyMessage = \"\";\nlet extractedData = {\n    \"ชื่อกิจกรรม\": \"\",\n    \"วันที่\": \"\",\n    \"เวลาเริ่ม\": \"\",\n    \"เวลาสิ้นสุด\": \"\"\n};\n\n// 🌟 ฟังก์ชันพิเศษ: แปลงภาษาพูดไทย เป็นเวลา 24 ชั่วโมง (เช่น บ่ายสองครึ่ง -> 14:30)\nfunction parseTime(s) {\n    if (!s) return \"\";\n    s = s.trim();\n    \n    // ตรวจสอบกรณีพิมพ์ตัวเลขมาตรงๆ เช่น 14:30 หรือ 14.30\n    let standardMatch = s.match(/([0-9]{1,2})[:.]([0-9]{2})/);\n    if (standardMatch) return `${standardMatch[1].padStart(2, '0')}:${standardMatch[2]}`;\n\n    let hour = 0;\n    let minute = s.includes(\"ครึ่ง\") ? 30 : 0;\n    \n    let numMatch = s.match(/[0-9]+/);\n    let num = numMatch ? parseInt(numMatch[0]) : 0;\n\n    // แปลงคำอ่านภาษาไทยเป็นตัวเลข (รวมตัวเลขไทย)\n    const thaiNums = {\n        \"หนึ่ง\":1, \"เอ็ด\":1, \"สอง\":2, \"สาม\":3, \"สี่\":4, \"ห้า\":5, \n        \"หก\":6, \"เจ็ด\":7, \"แปด\":8, \"เก้า\":9, \"สิบ\":10,\n        \"๑\":1, \"๒\":2, \"๓\":3, \"๔\":4, \"๕\":5, \"๖\":6, \"๗\":7, \"๘\":8, \"๙\":9, \"๑๐\":10\n    };\n    for (let key in thaiNums) {\n        if (s.includes(key)) num = thaiNums[key];\n    }\n\n    // คำนวณชั่วโมงตามช่วงเวลา\n    if (s.includes(\"เที่ยงคืน\")) { hour = 0; }\n    else if (s.includes(\"เที่ยง\")) { hour = 12; }\n    else if (s.includes(\"ตี\")) { hour = num || 1; }\n    else if (s.includes(\"ทุ่ม\")) { hour = (num || 1) + 18; }\n    else if (s.includes(\"บ่าย\")) { hour = (num || 1) + 12; }\n    else if (s.includes(\"เย็น\")) { hour = num <= 6 ? num + 12 : num; }\n    else if (s.includes(\"เช้า\")) { hour = num <= 6 ? num + 6 : num; }\n    else if (s.includes(\"โมง\")) {\n        if (num === 0) hour = 13; // บ่ายโมง\n        else if (num === 6) hour = 18; // หกโมงเย็น\n        else if (num >= 1 && num <= 5) hour = num + 12; // บ่าย 2-5 โมง\n        else if (num >= 7 && num <= 11) hour = num; // 7-11 โมงเช้า\n        else if (num === 12) hour = 12;\n    } else {\n        hour = num;\n    }\n\n    if (hour < 0 || hour > 23) return s;\n    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;\n}\n\n// 2. เริ่มต้นการตรวจสอบข้อมูล\nif (event?.message?.type !== \"text\") {\n    replyMessage = `อลิซยังอ่านรูปภาพหรือสติ๊กเกอร์ไม่ได้นะคะ รบกวนคุณ ${displayName} พิมพ์เป็นข้อความมาน้า 🌸`;\n    isHandled = true;\n} else if (text.length > 0) {\n    \n    // 3. ตรวจสอบการคิดเลข\n    if (/^[0-9+\\-*/().\\s]+$/.test(text) && /[+\\-*/]/.test(text)) {\n        try {\n            const result = new Function(`return ${text}`)();\n            replyMessage = `คุณ ${displayName} คะ ผลลัพธ์คือ ${result} ค่ะ 🌸`;\n            isHandled = true;\n        } catch (e) { isHandled = false; }\n    }\n\n    // 4. สกัดข้อมูล (Data Extraction) แบบฉลาดที่สุด\n    if (!isHandled) {\n        // แกะชื่อกิจกรรม (ตัดคำบอกเวลาด้านหลังทิ้ง เพื่อไม่ให้ชื่อรก)\n        const subjectMatch = text.match(/(?:หัวข้อ|เรื่อง|ชื่อกิจกรรม|ชื่อ)\\s*[:：]?\\s*([^\\n]+)/i);\n        if (subjectMatch) {\n            let subject = subjectMatch[1].trim();\n            // ลบคำบอกเวลาที่อาจต่อท้ายชื่อกิจกรรม (เช่น \"ออกกำลังกาย บ่ายสาม ถึง หกโมง\" -> \"ออกกำลังกาย\")\n            subject = subject.replace(/(วันนี้|พรุ่งนี้|มะรืน|บ่าย|เช้า|เย็น|เที่ยง|ตี|ทุ่ม|โมง)\\s*[\\u0E00-\\u0E7F0-9]+.*$/g, '').trim();\n            extractedData[\"ชื่อกิจกรรม\"] = subject;\n        }\n\n        // แกะวันที่\n        const dateMatch = text.match(/(วันนี้|พรุ่งนี้|มะรืน|[0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})/i);\n        if (dateMatch) extractedData[\"วันที่\"] = dateMatch[0].trim();\n\n        // 🌟 แกะเวลา (รองรับรูปแบบ \"บ่ายสาม ถึง หกโมง\" โดยใช้ฟังก์ชันแปลงตัวเลข)\n        // ปรับปรุง timeExpr ให้ครอบคลุมคำบอกเวลาภาษาไทยทั้งหมด รวมถึงตัวเลขไทย\n        const timeExpr = \"(?:เที่ยงคืน|เที่ยง|(?:บ่าย|เช้า|เย็น|ตี)\\\\s*[\\\\u0E00-\\\\u0E7F0-9]+|(?:[\\\\u0E00-\\\\u0E7F0-9]+)\\\\s*(?:ทุ่ม|โมง(?:เช้า|เย็น)?))(?:\\\\s*ครึ่ง)?|[0-9]{1,2}[:.][0-9]{1,2}\";\n        const timeRangeRegex = new RegExp(`(${timeExpr})\\\\s*(?:ถึง|-|จนถึง)\\\\s*(${timeExpr})`, \"i\");\n        const singleTimeRegex = new RegExp(`(?:เวลา|ตอน|เริ่ม)\\\\s*[:：]?\\\\s*(${timeExpr})`, \"i\");\n        const fallbackTimeRegex = new RegExp(`(${timeExpr})`, \"i\");\n\n        const rangeMatch = text.match(timeRangeRegex);\n        if (rangeMatch) {\n            extractedData[\"เวลาเริ่ม\"] = parseTime(rangeMatch[1]);\n            extractedData[\"เวลาสิ้นสุด\"] = parseTime(rangeMatch[2]);\n        } else {\n            const singleMatch = text.match(singleTimeRegex);\n            if (singleMatch) {\n                extractedData[\"เวลาเริ่ม\"] = parseTime(singleMatch[1]);\n            } else {\n                // ถ้าไม่มีคำว่า \"ตอน\" หรือ \"เริ่ม\" นำหน้า ก็จะหยิบคำบอกเวลาที่เจอมาใส่เลย\n                const fallbackMatch = text.match(fallbackTimeRegex);\n                if (fallbackMatch) extractedData[\"เวลาเริ่ม\"] = parseTime(fallbackMatch[1]);\n            }\n        }\n\n        // 💡 ตรวจสอบความครบถ้วน\n        if (extractedData[\"ชื่อกิจกรรม\"] && extractedData[\"วันที่\"] && extractedData[\"เวลาเริ่ม\"]) {\n            isHandled = false; // ส่งข้อมูลให้ AI หรือโหนดถัดไปบันทึก\n        } else if (text.includes(\"ชื่อกิจกรรม\") || text.includes(\"หัวข้อ\")) {\n            replyMessage = `คุณ ${displayName} คะ ข้อมูลยังขาดบางส่วน (ขาด: ${!extractedData[\"ชื่อกิจกรรม\"] ? 'ชื่อ, ' : ''}${!extractedData[\"วันที่\"] ? 'วันที่, ' : ''}${!extractedData[\"เวลาเริ่ม\"] ? 'เวลา' : ''}) รบกวนตรวจสอบอีกครั้งนะคะ 🌸`;\n            isHandled = true;\n        }\n    }\n}\n\nreturn {\n    isHandled,\n    replyMessage,\n    extractedData,\n    debugText: text\n};"
+        "jsCode": "// 1. ดึงข้อมูลพื้นฐาน\nconst webhookData = $(\"Webhook\").first().json;\nconst profileData = $input.first().json;\nconst displayName = profileData.profile?.displayName || \"คุณ\";\nconst event = webhookData?.body?.events?.[0];\nconst text = event?.message?.text ? event.message.text.trim() : \"\";\n\nlet isHandled = false;\nlet replyMessage = \"\";\nlet extractedData = {\n    \"ชื่อกิจกรรม\": \"\",\n    \"วันที่\": \"\",\n    \"เวลาเริ่ม\": \"\",\n    \"เวลาสิ้นสุด\": \"\"\n};\n\n// --- ฟังก์ชันแปลงเวลาภาษาไทย ---\nfunction parseTime(s) {\n    if (!s) return \"\";\n    s = s.trim();\n    let standardMatch = s.match(/([0-9]{1,2})[:.]([0-9]{2})/);\n    if (standardMatch) return `${standardMatch[1].padStart(2, '0')}:${standardMatch[2]}`;\n\n    let hour = 0;\n    let minute = s.includes(\"ครึ่ง\") ? 30 : 0;\n    let numMatch = s.match(/[0-9]+/);\n    let num = numMatch ? parseInt(numMatch[0]) : 0;\n\n    if (s.includes(\"เที่ยงคืน\")) { hour = 0; }\n    else if (s.includes(\"เที่ยง\")) { hour = 12; }\n    else if (s.includes(\"ตี\")) { hour = num || 1; }\n    else if (s.includes(\"ทุ่ม\")) { hour = (num || 1) + 18; }\n    else if (s.includes(\"บ่าย\")) { hour = (num || 1) + 12; }\n    else if (s.includes(\"เย็น\")) { hour = num <= 6 ? num + 12 : num; }\n    else if (s.includes(\"เช้า\")) { hour = num <= 6 ? num + 6 : num; }\n    else if (s.includes(\"โมง\")) {\n        if (num === 0) hour = 13; \n        else if (num === 6) hour = 18;\n        else if (num >= 1 && num <= 5) hour = num + 12;\n        else if (num >= 7 && num <= 11) hour = num;\n        else if (num === 12) hour = 12;\n    } else { hour = num; }\n\n    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;\n}\n\n// 2. ประมวลผลข้อความ\nif (event?.message?.type === \"text\" && text.length > 0) {\n    \n    // สกัดข้อมูลเบื้องต้น\n    const subjectMatch = text.match(/(?:หัวข้อ|เรื่อง|ชื่อกิจกรรม|ชื่อ)\\s*[:：]?\\s*([^\\n]+)/i);\n    if (subjectMatch) {\n        extractedData[\"ชื่อกิจกรรม\"] = subjectMatch[1].replace(/(วันนี้|พรุ่งนี้|มะรืน|บ่าย|เช้า|เย็น|เที่ยง|ตี|ทุ่ม|โมง)\\s*[\\u0E00-\\u0E7F0-9]+.*$/g, '').trim();\n    }\n\n    const dateMatch = text.match(/(วันนี้|พรุ่งนี้|มะรืน|[0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})/i);\n    if (dateMatch) extractedData[\"วันที่\"] = dateMatch[0].trim();\n\n    const timeExpr = \"(?:เที่ยงคืน|เที่ยง|(?:บ่าย|เช้า|เย็น|ตี)\\\\s*[\\\\u0E00-\\\\u0E7F0-9]+|(?:[\\\\u0E00-\\\\u0E7F0-9]+)\\\\s*(?:ทุ่ม|โมง(?:เช้า|เย็น)?))(?:\\\\s*ครึ่ง)?|[0-9]{1,2}[:.][0-9]{1,2}\";\n    const rangeMatch = text.match(new RegExp(`(${timeExpr})\\\\s*(?:ถึง|-|จนถึง)\\\\s*(${timeExpr})`, \"i\"));\n    \n    if (rangeMatch) {\n        extractedData[\"เวลาเริ่ม\"] = parseTime(rangeMatch[1]);\n        extractedData[\"เวลาสิ้นสุด\"] = parseTime(rangeMatch[2]);\n    } else {\n        const singleMatch = text.match(new RegExp(`(?:เวลา|ตอน|เริ่ม)\\\\s*[:：]?\\s*(${timeExpr})`, \"i\")) || text.match(new RegExp(`(${timeExpr})`, \"i\"));\n        if (singleMatch) extractedData[\"เวลาเริ่ม\"] = parseTime(singleMatch[1]);\n    }\n\n    // 🌟 3. ตรวจสอบเวลาปัจจุบัน (บังคับ GMT+7) 🌟\n    if (extractedData[\"วันที่\"] && extractedData[\"เวลาเริ่ม\"]) {\n        // สร้างเวลาปัจจุบันแบบไทย\n        const now = new Date(new Date().toLocaleString(\"en-US\", {timeZone: \"Asia/Bangkok\"}));\n        let checkDate = new Date(now);\n\n        // จัดการวันที่\n        if (extractedData[\"วันที่\"].includes('พรุ่งนี้')) checkDate.setDate(now.getDate() + 1);\n        else if (extractedData[\"วันที่\"].includes('มะรืน')) checkDate.setDate(now.getDate() + 2);\n        else if (!extractedData[\"วันที่\"].includes('วันนี้')) {\n            const p = extractedData[\"วันที่\"].match(/(\\d+)[/-](\\d+)[/-](\\d+)/);\n            if (p) {\n                let y = parseInt(p[3]);\n                if (y > 2500) y -= 543;\n                if (y < 100) y += 2000;\n                checkDate = new Date(y, parseInt(p[2]) - 1, parseInt(p[1]));\n            }\n        }\n\n        // ใส่เวลาเข้าไป\n        const [h, m] = extractedData[\"เวลาเริ่ม\"].split(':').map(Number);\n        checkDate.setHours(h, m, 0, 0);\n\n        // เปรียบเทียบยันนาที\n        if (checkDate < now) {\n            replyMessage = `คุณ ${displayName} คะ อลิซย้อนเวลาไม่ได้จริงๆ ค่ะ (ตอนนี้ ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} น. แล้ว) รบกวนขอเป็นเวลาในอนาคตน้า 🌸`;\n            isHandled = true;\n        }\n    }\n}\n\nreturn { isHandled, replyMessage, extractedData, debugText: text };"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -384,
+        -368,
         -64
       ],
       "id": "c4d82968-a042-41b4-95d5-e6a5c64aa955",
@@ -531,12 +538,12 @@
     },
     {
       "parameters": {
-        "jsCode": "// 1. ดึงข้อมูลจากทั้ง 2 แหล่ง (Scan Input และ AI Agent)\nconst jsData = $(\"Scan Input\").first().json.extractedData;\nconst aiOutput = $(\"AI Agent\").first().json.output || \"\";\n\n// ฟังก์ชันช่วยสกัดข้อมูลจากข้อความที่ AI ตอบกลับ (ในกรณีที่ AI ช่วยเติมข้อมูลให้)\nfunction extractFromAI(text) {\n    const summaryMatch = text.match(/📌 ชื่อกิจกรรม:\\s*([^\\n]+)/);\n    const dateMatch = text.match(/📅 วันที่:\\s*([^\\n]+)/);\n    const startMatch = text.match(/⏰ เวลาเริ่ม:\\s*([^\\n]+)/);\n    const endMatch = text.match(/⏰ เวลาสิ้นสุด:\\s*([^\\n]+)/);\n    \n    return {\n        \"ชื่อกิจกรรม\": summaryMatch ? summaryMatch[1].trim() : \"\",\n        \"วันที่\": dateMatch ? dateMatch[1].trim() : \"\",\n        \"เวลาเริ่ม\": startMatch ? startMatch[1].trim() : \"\",\n        \"เวลาสิ้นสุด\": endMatch ? endMatch[1].trim() : \"\"\n    };\n}\n\nconst aiData = extractFromAI(aiOutput);\n\n// เลือกใช้ข้อมูล: ถ้า AI มีข้อมูลให้ใช้ AI ถ้าไม่มีให้ใช้จากโหนด Scan Input\nconst extracted = {\n    \"ชื่อกิจกรรม\": aiData[\"ชื่อกิจกรรม\"] || jsData[\"ชื่อกิจกรรม\"] || \"ไม่มีชื่อกิจกรรม\",\n    \"วันที่\": aiData[\"วันที่\"] || jsData[\"วันที่\"] || \"วันนี้\",\n    \"เวลาเริ่ม\": aiData[\"เวลาเริ่ม\"] || jsData[\"เวลาเริ่ม\"] || \"00:00\",\n    \"เวลาสิ้นสุด\": aiData[\"เวลาสิ้นสุด\"] || jsData[\"เวลาสิ้นสุด\"] || \"\"\n};\n\n// 2. ฟังก์ชันแปลงวันที่ภาษาไทย (วันนี้, พรุ่งนี้, มะรืน หรือ วว/ดด/ปป)\nfunction convertThaiDate(dateStr) {\n    const now = new Date();\n    let targetDate = new Date(now);\n\n    if (dateStr.includes('พรุ่งนี้')) {\n        targetDate.setDate(now.getDate() + 1);\n    } else if (dateStr.includes('มะรืน')) {\n        targetDate.setDate(now.getDate() + 2);\n    } else if (!dateStr || dateStr.includes('วันนี้')) {\n        // วันนี้ (ไม่ต้องเปลี่ยน)\n    } else {\n        const parts = dateStr.match(/(\\d+)[/\\\\-](\\d+)[/\\\\-](\\d+)/);\n        if (parts) {\n            const day = parseInt(parts[1]);\n            const month = parseInt(parts[2]) - 1;\n            let year = parseInt(parts[3]);\n            if (year > 2500) year -= 543; // แปลง พ.ศ. เป็น ค.ศ.\n            targetDate = new Date(year, month, day);\n        }\n    }\n    return targetDate;\n}\n\n// 3. ฟังก์ชันรวมวันที่กับเวลา (HH:mm)\nfunction combineDateTime(dateObj, timeStr) {\n    const [hour, minute] = timeStr.split(':').map(Number);\n    const dt = new Date(dateObj);\n    dt.setHours(hour || 0, minute || 0, 0, 0);\n    return dt;\n}\n\n// 🌟 4. ฟังก์ชันสำคัญ: แปลงเวลาเป็น ISO แบบ Local (แก้ปัญหาเวลาเลื่อน +7 ชม.)\nfunction toLocalISOString(date) {\n    const pad = (num) => (num < 10 ? '0' : '') + num;\n    return date.getFullYear() +\n        '-' + pad(date.getMonth() + 1) +\n        '-' + pad(date.getDate()) +\n        'T' + pad(date.getHours()) +\n        ':' + pad(date.getMinutes()) +\n        ':' + pad(date.getSeconds());\n}\n\n// --- เริ่มประมวลผล ---\nconst eventDate = convertThaiDate(extracted[\"วันที่\"]);\nconst startDateTime = combineDateTime(eventDate, extracted[\"เวลาเริ่ม\"]);\n\nlet endDateTime;\nif (extracted[\"เวลาสิ้นสุด\"] && extracted[\"เวลาสิ้นสุด\"] !== \"\") {\n    endDateTime = combineDateTime(eventDate, extracted[\"เวลาสิ้นสุด\"]);\n} else {\n    // ถ้าไม่มีเวลาสิ้นสุด ให้ตั้งเป็น 1 ชั่วโมงหลังจากเวลาเริ่ม\n    endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);\n}\n\n// ป้องกันกรณีเวลาจบ น้อยกว่าเวลาเริ่ม\nif (endDateTime <= startDateTime) {\n    endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);\n}\n\nreturn {\n    summary: extracted[\"ชื่อกิจกรรม\"],\n    startISO: toLocalISOString(startDateTime),\n    endISO: toLocalISOString(endDateTime)\n};"
+        "jsCode": "// 1. ดึงข้อมูลจากทั้ง 2 แหล่ง (Scan Input และ AI Agent)\nconst jsData = $(\"Scan Input\").first().json.extractedData;\nconst aiOutput = $(\"AI Agent\").first().json.output || \"\";\n\n// ฟังก์ชันช่วยสกัดข้อมูลจากข้อความที่ AI ตอบกลับ (ในกรณีที่ AI ช่วยเติมข้อมูลให้)\nfunction extractFromAI(text) {\n    const summaryMatch = text.match(/📌 ชื่อกิจกรรม:\\s*([^\\n]+)/);\n    const dateMatch = text.match(/📅 วันที่:\\s*([^\\n]+)/);\n    const startMatch = text.match(/⏰ เวลาเริ่ม:\\s*([^\\n]+)/);\n    const endMatch = text.match(/⏰ เวลาสิ้นสุด:\\s*([^\\n]+)/);\n    \n    return {\n        \"ชื่อกิจกรรม\": summaryMatch ? summaryMatch[1].trim() : \"\",\n        \"วันที่\": dateMatch ? dateMatch[1].trim() : \"\",\n        \"เวลาเริ่ม\": startMatch ? startMatch[1].trim() : \"\",\n        \"เวลาสิ้นสุด\": endMatch ? endMatch[1].trim() : \"\"\n    };\n}\n\nconst aiData = extractFromAI(aiOutput);\n\n// เลือกใช้ข้อมูล: ถ้า AI มีข้อมูลให้ใช้ AI ถ้าไม่มีให้ใช้จากโหนด Scan Input\nconst extracted = {\n    \"ชื่อกิจกรรม\": aiData[\"ชื่อกิจกรรม\"] || jsData[\"ชื่อกิจกรรม\"] || \"ไม่มีชื่อกิจกรรม\",\n    \"วันที่\": aiData[\"วันที่\"] || jsData[\"วันที่\"] || \"วันนี้\",\n    \"เวลาเริ่ม\": aiData[\"เวลาเริ่ม\"] || jsData[\"เวลาเริ่ม\"] || \"00:00\",\n    \"เวลาสิ้นสุด\": aiData[\"เวลาสิ้นสุด\"] || jsData[\"เวลาสิ้นสุด\"] || \"\"\n};\n\n// 2. ฟังก์ชันแปลงวันที่ภาษาไทย (วันนี้, พรุ่งนี้, มะรืน หรือ วว/ดด/ปป)\nfunction convertThaiDate(dateStr) {\n    const now = new Date();\n    let targetDate = new Date(now);\n\n    if (dateStr.includes('พรุ่งนี้')) {\n        targetDate.setDate(now.getDate() + 1);\n    } else if (dateStr.includes('มะรืน')) {\n        targetDate.setDate(now.getDate() + 2);\n    } else if (!dateStr || dateStr.includes('วันนี้')) {\n        // วันนี้ (ไม่ต้องเปลี่ยน)\n    } else {\n        const parts = dateStr.match(/(\\d+)[/\\\\-](\\d+)[/\\\\-](\\d+)/);\n        if (parts) {\n            const day = parseInt(parts[1]);\n            const month = parseInt(parts[2]) - 1;\n            let year = parseInt(parts[3]);\n            if (year > 2500) year -= 543; // แปลง พ.ศ. เป็น ค.ศ.\n            targetDate = new Date(year, month, day);\n        }\n    }\n    return targetDate;\n}\n\n// 3. ฟังก์ชันรวมวันที่กับเวลา (HH:mm)\nfunction combineDateTime(dateObj, timeStr) {\n    const [hour, minute] = timeStr.split(':').map(Number);\n    const dt = new Date(dateObj);\n    dt.setHours(hour || 0, minute || 0, 0, 0);\n    return dt;\n}\n\n// 🌟 4. ฟังก์ชันสำคัญ: แปลงเวลาเป็น ISO แบบ Local \nfunction toLocalISOString(date) {\n    const pad = (num) => (num < 10 ? '0' : '') + num;\n    return date.getFullYear() +\n        '-' + pad(date.getMonth() + 1) +\n        '-' + pad(date.getDate()) +\n        'T' + pad(date.getHours()) +\n        ':' + pad(date.getMinutes()) +\n        ':' + pad(date.getSeconds());\n}\n\n// --- เริ่มประมวลผล ---\nconst eventDate = convertThaiDate(extracted[\"วันที่\"]);\nconst startDateTime = combineDateTime(eventDate, extracted[\"เวลาเริ่ม\"]);\n\nlet endDateTime;\nif (extracted[\"เวลาสิ้นสุด\"] && extracted[\"เวลาสิ้นสุด\"] !== \"\") {\n    endDateTime = combineDateTime(eventDate, extracted[\"เวลาสิ้นสุด\"]);\n} else {\n    // ถ้าไม่มีเวลาสิ้นสุด ให้ตั้งเป็น 1 ชั่วโมงหลังจากเวลาเริ่ม\n    endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);\n}\n\n// ป้องกันกรณีเวลาจบ น้อยกว่าเวลาเริ่ม\nif (endDateTime <= startDateTime) {\n    endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);\n}\n\nreturn {\n    summary: extracted[\"ชื่อกิจกรรม\"],\n    startISO: toLocalISOString(startDateTime),\n    endISO: toLocalISOString(endDateTime)\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        288,
+        384,
         -64
       ],
       "id": "0facc238-7a16-4449-b768-5c7cfe93e654",
@@ -549,7 +556,7 @@
         "messages": {
           "values": [
             {
-              "text": "={{ $('Scan Input').item.json.replyMessage }}"
+              "text": "={{ $json.replyMessage }}"
             }
           ]
         }
@@ -572,7 +579,7 @@
     {
       "parameters": {
         "operation": "send",
-        "to": "=U0f16bfdaff0eed462d0fe0c7e0ae712f",
+        "to": "={{ $('Get row(s) in sheet').item.json['LINE User ID'] }}",
         "messages": {
           "values": [
             {
@@ -584,8 +591,8 @@
       "type": "@aotoki/n8n-nodes-line-messaging.lineMessaging",
       "typeVersion": 1,
       "position": [
-        528,
-        384
+        448,
+        368
       ],
       "id": "55809948-635d-4cf6-a787-45f292ed053a",
       "name": "Messenger",
@@ -593,6 +600,39 @@
         "lineMessagingApi": {
           "id": "MhyzfOgAkpg2P4dJ",
           "name": "Line Messaging account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1tphTRbiq4Q0uLdUYP5nEnI1998hSSZjvIQZLZlEJnpg",
+          "mode": "list",
+          "cachedResultName": "Alice_N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tphTRbiq4Q0uLdUYP5nEnI1998hSSZjvIQZLZlEJnpg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tphTRbiq4Q0uLdUYP5nEnI1998hSSZjvIQZLZlEJnpg/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -240,
+        384
+      ],
+      "id": "39394b28-a200-4adf-bc97-f75ea5beddbb",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DU0xFnGqgklZK40A",
+          "name": "Google Sheets account"
         }
       }
     }
@@ -691,7 +731,7 @@
       "main": [
         [
           {
-            "node": "Filter Request",
+            "node": "Get row(s) in sheet",
             "type": "main",
             "index": 0
           }
@@ -770,6 +810,17 @@
           }
         ]
       ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -781,7 +832,7 @@
     "executionOrder": "v0",
     "binaryMode": "separate"
   },
-  "versionId": "18aa5a9c-77b4-4083-ba4f-60b34687e688",
+  "versionId": "4444195a-fe1c-4387-9b3b-eab6787bd13e",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "016e01b478aa3bfc84e6d9bbb99a07268a3eb32882f70a43d13cc1fc95af3e60"
