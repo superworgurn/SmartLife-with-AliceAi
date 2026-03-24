@@ -16,89 +16,39 @@
 ## 🇬🇧 English Version
 
 ### 🌟 Introduction
-**SmartLife-with-AliceAi** is a smart personal assistant workflow running on **n8n**. "Alice" is designed to be a cute, highly polite AI who helps you manage your Google Calendar events and sends you friendly reminders via **LINE Official Account (Messaging API)** 2 minutes before your events start. 
+**SmartLife-with-AliceAi** is a smart personal assistant workflow running on **n8n**. "Alice" is designed to be a cute, highly polite AI who helps you manage your daily life and schedules via your **LINE Official Account (Messaging API)**. She effortlessly connects your chats to Google Calendar and provides friendly reminders exactly when you need them.
 
 ### 🚀 Features
-- **Natural Language Calendar Management:** Tell Alice to create an event, and she will automatically extract the date, time, and summary to save it to your Google Calendar.
-- **Smart Reminders:** Automatically notifies you via LINE 2 minutes before an event starts. She even gives special encouraging messages for "Exams" or "Tests"!
-- **Math Capabilities:** Equipped with a calculator tool to help you solve math problems.
-- **Local AI Powered:** Uses **Ollama** for complete privacy and local processing.
+- **Natural Language Calendar Management:** Tell Alice your plans using natural language (including Thai contexts like "พรุ่งนี้", "มะรืน", "2 ทุ่ม"). The system will smartly extract the activity name, date, and time to automatically create an event in your Google Calendar.
+- **Past-Time Protection:** Alice is smart enough to know she can't time travel! If you attempt to schedule an event in the past, she will politely decline and ask for a valid future time.
+- **Smart 30-Minute Reminders:** The system checks your calendar and notifies you via LINE **30 minutes** before an event starts. 
+- **Special Encouragement:** If your scheduled activity includes words like "Exam", "Test", or "สอบ", Alice will send you a special, heartwarming encouraging message to boost your confidence!
+- **Data Logging:** All successfully scheduled events are seamlessly logged into **Google Sheets** for your personal records and tracking.
+- **Local AI Powered:** Uses **Ollama** (powered by the `qwen2.5:7b` model) for intelligent conversation, complete privacy, and local processing.
 
 ### 🛠️ Tech Stack & Architecture
 - **Workflow Automation:** n8n
-- **Local LLM:** Ollama 
+- **Local LLM:** Ollama (qwen2.5:7b)
 - **Messaging Platform:** LINE Official Account (Messaging API)
+- **Database & Scheduling:** Google Calendar & Google Sheets
 - **Expose Localhost:** Cloudflare Tunnel (`cloudflared`)
 - **Containerization:** Docker
 
 ### ⚙️ Installation & Setup
 
-#### 1. Start Ollama (with GPU Support)
-```bash
-docker run -d \
-  --gpus all \
-  -v ollama_storage:/root/.ollama \
-  -p 11434:11434 \
-  -e OLLAMA_ORIGINS="*" \
-  --name ollama \
-  ollama/ollama
-```
+To keep this guide clean and easy to follow, we have separated the setup instructions into dedicated documentation files. Please follow the steps below:
 
-_Download the required models (Note: Model AI Size > 4b is recommended):_
-
-**Example**
-
-```
-docker exec -it ollama ollama pull llama3.1
-docker exec -it ollama ollama pull gemma3:4b
-```
-
-#### 2. Start Cloudflare Tunnel (If you don't have a personal domain name)
-
-_For n8n:_
-
-Bash
-
-```
-docker run -it --rm --name cloudflare-quick-tunnel \
-  cloudflare/cloudflared \
-  tunnel --url http://host.docker.internal:5678
-```
-
-_For Ollama:_
-
-Bash
-
-```
-docker run -it --rm --name ollama-tunnel \
-  cloudflare/cloudflared \
-  tunnel --url http://host.docker.internal:11434
-```
-
-#### 3. Start n8n
-
-Replace `<YOUR_TUNNEL_URL>` with the URL provided by the Cloudflare tunnel in step 2.
-
-Bash
-
-```
-docker run -it -p 5678:5678 -v n8n_data:/home/node/.n8n -e WEBHOOK_URL=https://<YOUR_TUNNEL_URL> -e N8N_HOST=<YOUR_TUNNEL_URL> -e N8N_PROTOCOL=https -e N8N_PORT=5678 -e N8N_EDITOR_BASE_URL=https://<YOUR_TUNNEL_URL> n8nio/n8n
-```
-
-#### 4. Import Workflow
-
--   Open your n8n instance.
-    
--   Import the `SmartLife-with-AliceAi.json` file.
-    
--   Update your Credentials for **Ollama**, **LINE Messaging API**, and **Google Calendar OAuth2**.
-    
--   For n8n connecting to Ollama, use `http://host.docker.internal:11434` as the host.
-    
+1. **[Start Ollama (with GPU Support)](https://github.com/ShoperGamer/SmartLife-with-AliceAi/blob/main/Setting/ollama.txt)**: Instructions to run Ollama and download the required AI models.
+2. **[Start Cloudflare Tunnel](https://github.com/ShoperGamer/SmartLife-with-AliceAi/blob/main/Setting/cloudflare_tunnel.txt)**: Instructions to expose your local n8n and Ollama to the internet (Useful if you don't have a personal domain name).
+3. **[Start n8n](https://github.com/ShoperGamer/SmartLife-with-AliceAi/blob/main/Setting/n8n.txt)**: Instructions to run n8n via Docker or connect it to your Ollama instance.
+4. **Import Workflow**:
+   - Open your n8n instance.
+   - Import the `SmartLife-with-AliceAi.json` file.
+   - Update your Credentials for **Ollama**, **LINE Messaging API**, **Google Calendar OAuth2**, and **Google Sheets OAuth2**.
 
 ### 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE&authuser=4) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://www.blockdit.com/posts/67c70e1a64043ade0cce781a) file for details.
 
 <hr>
 
@@ -106,98 +56,38 @@ This project is licensed under the MIT License - see the [LICENSE](https://www.g
 
 ### 🌟 แนะนำโปรเจกต์
 
-**SmartLife-with-AliceAi** คือระบบผู้ช่วยส่วนตัวอัจฉริยะที่รันบน **n8n** โดยมี "อลิซ (Alice)" เป็น AI ผู้ช่วยที่มีนิสัยน่ารัก เรียบร้อย และสุภาพ อลิซจะคอยช่วยเหลือคุณในการจัดการปฏิทิน (Google Calendar) และคอยแจ้งเตือนกิจกรรมผ่าน **LINE OA** ล่วงหน้า 2 นาทีก่อนเริ่มกิจกรรม
+**SmartLife-with-AliceAi** คือระบบ Workflow ผู้ช่วยส่วนตัวอัจฉริยะที่ทำงานบน **n8n** โดยมี "อลิซ (Alice)" เป็น AI ผู้ช่วยที่มีนิสัยน่ารัก เรียบร้อย และสุภาพที่สุด อลิซจะคอยดูแลและช่วยเหลือคุณในการจัดการตารางชีวิตประจำวันผ่านทาง **LINE OA** เชื่อมต่อกับปฏิทินของคุณได้อย่างไร้รอยต่อ
 
 ### 🚀 ฟีเจอร์หลัก
 
--   **จัดการปฏิทินด้วยภาษาพูด:** พิมพ์บอกอลิซให้ตั้งเตือนกิจกรรม ระบบจะสกัด วัน เวลา และชื่อกิจกรรม ไปบันทึกลง Google Calendar ให้โดยอัตโนมัติ
-    
--   **แจ้งเตือนอัจฉริยะ:** ระบบจะส่งข้อความแจ้งเตือนผ่าน LINE ล่วงหน้า 2 นาที โดยมีเงื่อนไขพิเศษ เช่น หากเป็น "วันสอบ" อลิซจะพิมพ์ข้อความให้กำลังใจเป็นพิเศษ!
-    
--   **ช่วยคำนวณ:** มีระบบ Calculator ช่วยคิดเลขเมื่อคุณต้องการ
-    
--   **ประมวลผลในเครื่อง (Local AI):** ใช้ **Ollama** เพื่อความปลอดภัยของข้อมูลส่วนตัว
-    
+- **จัดการปฏิทินด้วยภาษาพูด:** พิมพ์บอกอลิซด้วยภาษาธรรมชาติได้เลย ระบบรองรับคำระบุเวลาภาษาไทยอย่างเข้าใจ (เช่น "พรุ่งนี้", "มะรืน", "2 ทุ่ม", "บ่ายสาม") ระบบจะสกัด วัน เวลา และชื่อกิจกรรม ไปบันทึกลง Google Calendar ให้โดยอัตโนมัติ
+- **ระบบป้องกันการนัดหมายย้อนหลัง:** อลิซรู้ว่าเธอย้อนเวลาไม่ได้! หากคุณเผลอสั่งให้จดตารางเวลาที่ผ่านไปแล้ว อลิซจะปฏิเสธอย่างนุ่มนวลและขอให้คุณระบุเวลาในอนาคตแทน
+- **แจ้งเตือนล่วงหน้า 30 นาที:** ระบบจะคอยเช็คตารางงานของคุณ และส่งข้อความแจ้งเตือนความจำผ่าน LINE ล่วงหน้า **30 นาที** ก่อนเริ่มกิจกรรม
+- **โหมดให้กำลังใจ:** หากกิจกรรมของคุณมีคำว่า "สอบ", "Exam" หรือ "Test" อลิซจะพิมพ์ข้อความอวยพรและให้กำลังใจคุณเป็นพิเศษก่อนเข้าสอบ!
+- **เก็บบันทึกข้อมูลเป็นระเบียบ:** ทุกกิจกรรมที่ถูกบันทึกสำเร็จ จะถูกส่งไปเก็บไว้ใน **Google Sheets** เพื่อเป็นฐานข้อมูลให้คุณย้อนดูได้
+- **ประมวลผลในเครื่อง (Local AI):** ใช้พลังของ **Ollama** (โมเดล `qwen2.5:7b`) ในการประมวลผลข้อความ ทำให้ข้อมูลส่วนตัวของคุณปลอดภัยและไม่ต้องพึ่งพา API ภายนอก
 
 ### 🛠️ เทคโนโลยีที่ใช้
 
--   **สร้าง Workflow:** n8n
-    
--   **Local LLM:** Ollama
-    
--   **แพลตฟอร์มแชท:** LINE Official Account (Messaging API)
-    
--   **เปิดพอร์ตเครือข่ายให้เชื่อมต่อออนไลน์ได้:** Cloudflare Tunnel (`cloudflared`)
-    
--   **จัดการสภาพแวดล้อม:** Docker
-    
+- **สร้าง Workflow:** n8n
+- **Local LLM:** Ollama (qwen2.5:7b)
+- **แพลตฟอร์มแชท:** LINE Official Account (Messaging API)
+- **ฐานข้อมูลและปฏิทิน:** Google Calendar และ Google Sheets
+- **เปิดพอร์ตเครือข่ายให้เชื่อมต่อออนไลน์ได้:** Cloudflare Tunnel (`cloudflared`)
+- **จัดการสภาพแวดล้อม:** Docker
 
 ### ⚙️ การติดตั้งและการใช้งาน
 
-#### 1. รัน Ollama (รองรับการใช้ GPU)
+เพื่อให้คู่มือนี้อ่านง่ายและเป็นระเบียบ วิธีการตั้งค่าต่างๆ ได้ถูกแยกไว้ในโฟลเดอร์ `Setting` โปรดทำตามขั้นตอนดังต่อไปนี้:
 
-Bash
-
-```
-docker run -d \
-  --gpus all \
-  -v ollama_storage:/root/.ollama \
-  -p 11434:11434 \
-  -e OLLAMA_ORIGINS="*" \
-  --name ollama \
-  ollama/ollama
-```
-
-_ดาวน์โหลดโมเดลที่ใช้ (คำเตือน: ควรมีพื้นที่ว่างหรือสเปกที่รองรับโมเดลขนาดใหญ่กว่า 4b):_
-
-
-**ตัวอย่าง**
-```
-docker exec -it ollama ollama pull llama3.1
-docker exec -it ollama ollama pull gemma3:4b
-```
-
-#### 2. รัน Cloudflare Tunnel (กรณีไม่มี Domain ส่วนตัว)
-
-_สำหรับ n8n:_
-
-Bash
-
-```
-docker run -it --rm --name cloudflare-quick-tunnel \
-  cloudflare/cloudflared \
-  tunnel --url http://host.docker.internal:5678
-```
-
-_สำหรับ Ollama:_
-
-Bash
-
-```
-docker run -it --rm --name ollama-tunnel \
-  cloudflare/cloudflared \
-  tunnel --url http://host.docker.internal:11434
-```
-
-#### 3. รัน n8n
-
-นำ URL ที่ได้จาก Cloudflare Tunnel ในขั้นตอนที่ 2 มาแทนที่ `<YOUR_TUNNEL_URL>`
-
-Bash
-
-```
-docker run -it -p 5678:5678 -v n8n_data:/home/node/.n8n -e WEBHOOK_URL=https://<YOUR_TUNNEL_URL> -e N8N_HOST=<YOUR_TUNNEL_URL> -e N8N_PROTOCOL=https -e N8N_PORT=5678 -e N8N_EDITOR_BASE_URL=https://<YOUR_TUNNEL_URL> n8nio/n8n
-```
-
-#### 4. การตั้งค่า Workflow
-
--   เข้าสู่ระบบ n8n ของคุณ
-    
--   ทำการ Import ไฟล์ `SmartLife-with-AliceAi.json`
-    
--   ตั้งค่า Credentials ของ **Ollama** (ใช้ URL: `http://host.docker.internal:11434`), **LINE Messaging API** และ **Google Calendar OAuth2** ให้เรียบร้อย
-    
+1. **[การรัน Ollama (รองรับการใช้ GPU)](https://github.com/ShoperGamer/SmartLife-with-AliceAi/blob/main/Setting/ollama.txt)**: ดูคำสั่งรัน Ollama และดาวน์โหลดโมเดล
+2. **[การตั้งค่า Cloudflare Tunnel](https://github.com/ShoperGamer/SmartLife-with-AliceAi/blob/main/Setting/cloudflare_tunnel.txt)**: สำหรับเปิดพอร์ต n8n หรือ Ollama ออกสู่อินเทอร์เน็ต (กรณีที่คุณไม่มี Domain ส่วนตัว)
+3. **[การรัน n8n](https://github.com/ShoperGamer/SmartLife-with-AliceAi/blob/main/Setting/n8n.txt)**: คำสั่งรัน n8n ผ่าน Docker และการเชื่อมต่อกับ Ollama
+4. **การนำเข้า Workflow**:
+   - เข้าสู่ระบบ n8n ของคุณ
+   - ทำการ Import ไฟล์ `SmartLife-with-AliceAi.json`
+   - ตั้งค่า Credentials ของ **Ollama**, **LINE Messaging API**, **Google Calendar OAuth2** และ **Google Sheets OAuth2** ให้เรียบร้อย
 
 ### 📄 License
 
-โปรเจกต์นี้ได้รับการคุ้มครองสิทธิ์ภายใต้ MIT License สามารถอ่านรายละเอียดเพิ่มเติมได้ในไฟล์ [LICENSE](https://www.google.com/search?q=LICENSE&authuser=4)
+โปรเจกต์นี้ได้รับการคุ้มครองสิทธิ์ภายใต้ MIT License สามารถอ่านรายละเอียดเพิ่มเติมได้ในไฟล์ [LICENSE](https://www.blockdit.com/posts/67c70e1a64043ade0cce781a)
